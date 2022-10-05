@@ -4,13 +4,26 @@ namespace GildedRoseKata
 {
   public class GildedRose
   {
-    IList<Item> Items;
-    public GildedRose(IList<Item> Items)
-    {
-      this.Items = Items;
-    }
+    static IList<Item> Items;
 
-    public void UpdateQuality()
+    public static void SetInventory(IList<Item> items)
+		{
+      GildedRose.Items = items;
+		}
+
+    // TODO: Deprecate this. keeping the constructor around for (imaginary) legacy code
+    public GildedRose(IList<Item> items)
+		{
+      GildedRose.Items = items;
+		}
+
+    public static void UpdateQuality(IList<Item> items)
+		{
+      SetInventory(items);
+      UpdateQuality();
+		}
+
+    public static void UpdateQuality()
     {
       for (var i = 0; i < Items.Count; i++)
       {
