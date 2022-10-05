@@ -29,7 +29,7 @@ namespace GildedRoseTests
       var sut = new GildedRose(Items);
       sut.UpdateQuality();
       Assert.Equal(12, Items.First().SellIn);
-      Assert.Equal(80, Items.First().Quality);
+      Assert.Equal(17, Items.First().Quality);
     }
 
     [Fact]
@@ -43,16 +43,6 @@ namespace GildedRoseTests
       sut.UpdateQuality();
       Assert.Equal(18, Items.First().SellIn);
       Assert.Equal(50, Items.First().Quality);
-		}
-
-		[Fact]
-		public void UpdateQuality_withQualityOverFifty_ReducesQualityToFifty()
-		{
-			IList<Item> Items = new List<Item> { new Item { Name = "foo", SellIn = 10, Quality = 100 } };
-			var sut = new GildedRose(Items);
-			sut.UpdateQuality();
-			Assert.Equal(50, Items[0].Quality);
-			Assert.Equal(9, Items[0].SellIn);
 		}
 
 		[Fact]
