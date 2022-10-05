@@ -46,7 +46,7 @@ namespace GildedRoseTests
 		}
 
 		[Fact]
-		public void UpdateQuality_withQualityOver50_ReducesQualityTo50()
+		public void UpdateQuality_withQualityOverFifty_ReducesQualityToFifty()
 		{
 			IList<Item> Items = new List<Item> { new Item { Name = "foo", SellIn = 10, Quality = 100 } };
 			var sut = new GildedRose(Items);
@@ -84,5 +84,45 @@ namespace GildedRoseTests
       Assert.Equal(-2, Items.First().SellIn);
       Assert.Equal(0, Items.First().Quality);
 		}
+
+    [Fact]
+    public void UpdateQuality_withBackstagePassWithin10Days_IncreasesQualityByTwo()
+		{
+      IList<Item> Items = new List<Item> { new Item { Name = BACKSTAGE_PASS_NAME, SellIn = 10, Quality = 20 } };
+      var sut = new GildedRose(Items);
+      sut.UpdateQuality();
+      Assert.Equal(9, Items.First().SellIn);
+      Assert.Equal(22, Items.First().Quality);
+    }
+
+    [Fact]
+    public void UpdateQuality_withBackstagePassWithin5Days_IncreasesQualityByThree()
+    {
+      IList<Item> Items = new List<Item> { new Item { Name = BACKSTAGE_PASS_NAME, SellIn = 5, Quality = 20 } };
+      var sut = new GildedRose(Items);
+      sut.UpdateQuality();
+      Assert.Equal(4, Items.First().SellIn);
+      Assert.Equal(23, Items.First().Quality);
+    }
+
+    [Fact]
+    public void UpdateQuality_withBackstagePassWithin10Days_ValueDoesNotExceedFifty()
+    {
+      IList<Item> Items = new List<Item> { new Item { Name = BACKSTAGE_PASS_NAME, SellIn = 10, Quality = 49 } };
+      var sut = new GildedRose(Items);
+      sut.UpdateQuality();
+      Assert.Equal(9, Items.First().SellIn);
+      Assert.Equal(50, Items.First().Quality);
+    }
+
+    [Fact]
+    public void UpdateQuality_withBackstagePassWithin5Days_ValueDoesNotExceedFifty()
+    {
+      IList<Item> Items = new List<Item> { new Item { Name = BACKSTAGE_PASS_NAME, SellIn = 5, Quality = 49 } };
+      var sut = new GildedRose(Items);
+      sut.UpdateQuality();
+      Assert.Equal(4, Items.First().SellIn);
+      Assert.Equal(50, Items.First().Quality);
+    }
   }
 }
