@@ -11,6 +11,7 @@ namespace GildedRoseTests
     private const string SULFURAS_NAME = "Sulfuras, Hand of Ragnaros";
     private const string AGED_BRIE_NAME = "Aged Brie";
 
+
     [Fact]
     public void UpdateQuality_withZeroQuality_QualityIsNotNegative()
     {
@@ -34,7 +35,7 @@ namespace GildedRoseTests
 
     [Fact]
     public void UpdateQuality_withAgedBrie_DoesNotSurpass50()
-		{
+    {
       IList<Item> Items = new List<Item> { new Item { Name = AGED_BRIE_NAME, SellIn = 20, Quality = 49 } };
       var sut = new GildedRose(Items);
       sut.UpdateQuality();
@@ -43,41 +44,41 @@ namespace GildedRoseTests
       sut.UpdateQuality();
       Assert.Equal(18, Items.First().SellIn);
       Assert.Equal(50, Items.First().Quality);
-		}
+    }
 
-		[Fact]
+    [Fact]
     public void UpdateQuality_withPastSellIn_DegradesQualityFaster()
-		{
+    {
       IList<Item> Items = new List<Item> { new Item { Name = "foo", SellIn = -1, Quality = 10 } };
       var sut = new GildedRose(Items);
       sut.UpdateQuality();
       Assert.Equal(-2, Items.First().SellIn);
       Assert.Equal(8, Items.First().Quality);
-		}
+    }
 
     [Fact]
     public void UpdateQuality_withBackstagePass_IncreasesInQuality()
-		{
+    {
       IList<Item> Items = new List<Item> { new Item { Name = BACKSTAGE_PASS_NAME, SellIn = 30, Quality = 10 } };
       var sut = new GildedRose(Items);
       sut.UpdateQuality();
       Assert.Equal(29, Items.First().SellIn);
       Assert.Equal(11, Items.First().Quality);
-		}
+    }
 
     [Fact]
     public void UpdateQuality_withBackstagePassAfterConcert_LosesAllQuality()
-		{
+    {
       IList<Item> Items = new List<Item> { new Item { Name = BACKSTAGE_PASS_NAME, SellIn = -1, Quality = 100 } };
       var sut = new GildedRose(Items);
       sut.UpdateQuality();
       Assert.Equal(-2, Items.First().SellIn);
       Assert.Equal(0, Items.First().Quality);
-		}
+    }
 
     [Fact]
     public void UpdateQuality_withBackstagePassWithin10Days_IncreasesQualityByTwo()
-		{
+    {
       IList<Item> Items = new List<Item> { new Item { Name = BACKSTAGE_PASS_NAME, SellIn = 10, Quality = 20 } };
       var sut = new GildedRose(Items);
       sut.UpdateQuality();
@@ -113,6 +114,37 @@ namespace GildedRoseTests
       sut.UpdateQuality();
       Assert.Equal(4, Items.First().SellIn);
       Assert.Equal(50, Items.First().Quality);
+    }
+
+    [Fact]
+    public void UpdateQuality_withMultipleItems_Succeeds()
+		{
+      IList<Item> Items = new List<Item>
+      {
+        new Item { Name = "foo", SellIn = 5, Quality = 12 },
+        new Item { Name = AGED_BRIE_NAME, SellIn = 10, Quality = 49 },
+        new Item { Name = SULFURAS_NAME, SellIn = 11, Quality = 80 }
+      };
+      var sut = new GildedRose(Items);
+
+      sut.UpdateQuality();
+
+      var foo = Items.FirstOrDefault(i => i.Name == "foo");
+      var brie = Items.FirstOrDefault(i => i.Name == AGED_BRIE_NAME);
+      var sulfuras = Items.FirstOrDefault(i => i.Name == SULFURAS_NAME);
+
+      Assert.NotNull(foo);
+      Assert.NotNull(brie);
+      Assert.NotNull(sulfuras);
+
+      Assert.Equal(4, foo.SellIn);
+      Assert.Equal(11, foo.Quality);
+
+      Assert.Equal(9, brie.SellIn);
+      Assert.Equal(50, brie.Quality);
+
+      Assert.Equal(11, sulfuras.SellIn);
+      Assert.Equal(80, sulfuras.Quality);
     }
   }
 }
