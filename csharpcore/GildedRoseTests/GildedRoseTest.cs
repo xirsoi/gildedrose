@@ -7,10 +7,6 @@ namespace GildedRoseTests
 {
   public class GildedRoseTest
   {
-    private const string BACKSTAGE_PASS_NAME = "Backstage passes to a TAFKAL80ETC concert";
-    private const string SULFURAS_NAME = "Sulfuras, Hand of Ragnaros";
-    private const string AGED_BRIE_NAME = "Aged Brie";
-
     [Fact]
     public void UpdateQuality_withZeroQuality_QualityIsNotNegative()
     {
@@ -26,7 +22,7 @@ namespace GildedRoseTests
     [Fact]
     public void UpdateQuality_withSulfuras()
     {
-      IList<Item> Items = new List<Item> { new Item { Name = SULFURAS_NAME, SellIn = 12, Quality = 17 } };
+      IList<Item> Items = new List<Item> { new Item { Name = GildedRose.SULFURAS_NAME, SellIn = 12, Quality = 17 } };
 
       GildedRose.UpdateQuality(Items);
 
@@ -37,7 +33,7 @@ namespace GildedRoseTests
     [Fact]
     public void UpdateQuality_withAgedBrie_DoesNotSurpass50()
     {
-      IList<Item> Items = new List<Item> { new Item { Name = AGED_BRIE_NAME, SellIn = 20, Quality = 49 } };
+      IList<Item> Items = new List<Item> { new Item { Name = GildedRose.AGED_BRIE_NAME, SellIn = 20, Quality = 49 } };
 
       GildedRose.UpdateQuality(Items);
 
@@ -64,7 +60,7 @@ namespace GildedRoseTests
     [Fact]
     public void UpdateQuality_withBackstagePass_IncreasesInQuality()
     {
-      IList<Item> Items = new List<Item> { new Item { Name = BACKSTAGE_PASS_NAME, SellIn = 30, Quality = 10 } };
+      IList<Item> Items = new List<Item> { new Item { Name = GildedRose.BACKSTAGE_PASS_NAME, SellIn = 30, Quality = 10 } };
 
       GildedRose.UpdateQuality(Items);
 
@@ -75,7 +71,7 @@ namespace GildedRoseTests
     [Fact]
     public void UpdateQuality_withBackstagePassAfterConcert_LosesAllQuality()
     {
-      IList<Item> Items = new List<Item> { new Item { Name = BACKSTAGE_PASS_NAME, SellIn = -1, Quality = 100 } };
+      IList<Item> Items = new List<Item> { new Item { Name = GildedRose.BACKSTAGE_PASS_NAME, SellIn = -1, Quality = 100 } };
 
       GildedRose.UpdateQuality(Items);
 
@@ -86,7 +82,7 @@ namespace GildedRoseTests
     [Fact]
     public void UpdateQuality_withBackstagePassWithin10Days_IncreasesQualityByTwo()
     {
-      IList<Item> Items = new List<Item> { new Item { Name = BACKSTAGE_PASS_NAME, SellIn = 10, Quality = 20 } };
+      IList<Item> Items = new List<Item> { new Item { Name = GildedRose.BACKSTAGE_PASS_NAME, SellIn = 10, Quality = 20 } };
 
       GildedRose.UpdateQuality(Items);
 
@@ -97,7 +93,7 @@ namespace GildedRoseTests
     [Fact]
     public void UpdateQuality_withBackstagePassWithin5Days_IncreasesQualityByThree()
     {
-      IList<Item> Items = new List<Item> { new Item { Name = BACKSTAGE_PASS_NAME, SellIn = 5, Quality = 20 } };
+      IList<Item> Items = new List<Item> { new Item { Name = GildedRose.BACKSTAGE_PASS_NAME, SellIn = 5, Quality = 20 } };
 
       GildedRose.UpdateQuality(Items);
 
@@ -108,7 +104,7 @@ namespace GildedRoseTests
     [Fact]
     public void UpdateQuality_withBackstagePassWithin10Days_ValueDoesNotExceedFifty()
     {
-      IList<Item> Items = new List<Item> { new Item { Name = BACKSTAGE_PASS_NAME, SellIn = 10, Quality = 49 } };
+      IList<Item> Items = new List<Item> { new Item { Name = GildedRose.BACKSTAGE_PASS_NAME, SellIn = 10, Quality = 49 } };
 
       GildedRose.UpdateQuality(Items);
 
@@ -119,7 +115,7 @@ namespace GildedRoseTests
     [Fact]
     public void UpdateQuality_withBackstagePassWithin5Days_ValueDoesNotExceedFifty()
     {
-      IList<Item> Items = new List<Item> { new Item { Name = BACKSTAGE_PASS_NAME, SellIn = 5, Quality = 49 } };
+      IList<Item> Items = new List<Item> { new Item { Name = GildedRose.BACKSTAGE_PASS_NAME, SellIn = 5, Quality = 49 } };
 
       GildedRose.UpdateQuality(Items);
 
@@ -133,15 +129,15 @@ namespace GildedRoseTests
       IList<Item> Items = new List<Item>
       {
         new Item { Name = "foo", SellIn = 5, Quality = 12 },
-        new Item { Name = AGED_BRIE_NAME, SellIn = 10, Quality = 49 },
-        new Item { Name = SULFURAS_NAME, SellIn = 11, Quality = 80 }
+        new Item { Name = GildedRose.AGED_BRIE_NAME, SellIn = 10, Quality = 49 },
+        new Item { Name = GildedRose.SULFURAS_NAME, SellIn = 11, Quality = 80 }
       };
 
       GildedRose.UpdateQuality(Items);
 
       var foo = Items.FirstOrDefault(i => i.Name == "foo");
-      var brie = Items.FirstOrDefault(i => i.Name == AGED_BRIE_NAME);
-      var sulfuras = Items.FirstOrDefault(i => i.Name == SULFURAS_NAME);
+      var brie = Items.FirstOrDefault(i => i.Name == GildedRose.AGED_BRIE_NAME);
+      var sulfuras = Items.FirstOrDefault(i => i.Name == GildedRose.SULFURAS_NAME);
 
       Assert.NotNull(foo);
       Assert.NotNull(brie);
